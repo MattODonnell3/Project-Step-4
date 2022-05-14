@@ -5,9 +5,15 @@
 --player_statistics
 --games
 
---creates all the tables and initializes them with values
-
+--This resets the DB, (deletes db from bottom up) not sure if this is proper
+-- practice but it works and I don't get any constraint errors this way
+DROP TABLE IF EXISTS player_statistics;
+DROP TABLE IF EXISTS games;
+DROP TABLE IF EXISTS players;
+DROP TABLE IF EXISTS teams;
 DROP TABLE IF EXISTS divisions;
+
+--creates all the tables
 
 CREATE TABLE divisions (
   div_id int(11) NOT NULL AUTO_INCREMENT,
@@ -16,7 +22,6 @@ CREATE TABLE divisions (
 );
 
 DROP TABLE IF EXISTS teams;
-
 
 CREATE TABLE teams (
   team_id int(11) NOT NULL AUTO_INCREMENT,
@@ -36,7 +41,7 @@ CREATE TABLE players (
   fname varchar(255),
   mname varchar(255),
   lname varchar(255) NOT NULL,
-  player_number varchar(255),
+  player_number int,
   player_birthdate date,
   position varchar(255),
   team_id int(11),
@@ -63,6 +68,7 @@ CREATE TABLE games (
     ON DELETE SET NULL
 );
 
+
 DROP TABLE IF EXISTS player_statistics;
 
 CREATE TABLE player_statistics (
@@ -81,3 +87,55 @@ CREATE TABLE player_statistics (
 );
 
 --insert values
+INSERT INTO divisions (div_name) VALUES ('Eastern Conference'), ('Western Conference');
+
+INSERT INTO teams (team_name, hometown, div_id) VALUES
+  ('Trail Blazers', 'Portland', 2),
+  ('Lakers', 'Los Angeles', 2),
+  ('Rockets', 'Houston', 2),
+  ('Celtics', 'Boston', 1),
+  ('Bulls', 'Chicago', 1),
+  ('Heat', 'Miami', 1);
+
+/*
++---------+---------------+-------------+--------+
+| team_id | team_name     | hometown    | div_id |
++---------+---------------+-------------+--------+
+|       1 | Trail Blazers | Portland    |      2 |
+|       2 | Lakers        | Los Angeles |      2 |
+|       3 | Rockets       | Houston     |      2 |
+|       4 | Celtics       | Boston      |      1 |
+|       5 | Bulls         | Chicago     |      1 |
+|       6 | Heat          | Miami       |      1 |
++---------+---------------+-------------+--------+
+
+*/
+
+-- Note apostrophes in names with \' (i think)
+
+-- Players
+INSERT INTO players (fname, lname, player_number, team_id) VALUES
+  ('Damian', 'Lillard', 0, 1),
+  ('Justise', 'Winslow', 26, 1),
+
+  ('Russel', 'Westbrook', 0, 2),
+  ('Anthony', 'Davis', 3, 2),
+
+  ('David', 'Nwaba', 2, 3),
+  ('Dennis', 'Schroder', 17,3),
+
+  ('Jaylen', 'Brown', 7, 4),
+  ('Marcus', 'Smart', 36, 4),
+
+  ('Lonzo', 'Ball', 2, 5),
+  ('Zach', 'LaVine', 8, 5),
+
+  ('Kyle', 'Lowry', 7, 6),
+  ('P.J.', 'Tucker', 17, 6);
+
+-- Games
+INSERT INTO games(game_date, home_team, away_team, home_score, away_score) VALUES
+  ('2021-11-26', 2, 1, 118, 103),
+  ('2021-12-04', 1, 4, 117, 145),
+  ('2021-11-24', 3, 5, 118, 113),
+  ('2021-12-31', 3, 6, 110, 120);
