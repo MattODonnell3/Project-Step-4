@@ -74,9 +74,9 @@ DROP TABLE IF EXISTS player_statistics;
 CREATE TABLE player_statistics (
   player_id int(11),
   game_id int(11),
-  points int,
-  assists int,
-  rebounds int,
+  points int DEFAULT 0,
+  assists int DEFAULT 0,
+  rebounds int DEFAULT 0,
   PRIMARY KEY (player_id, game_id),
   FOREIGN KEY (player_id) REFERENCES players(player_id)
     ON UPDATE CASCADE
@@ -139,3 +139,10 @@ INSERT INTO games(game_date, home_team, away_team, home_score, away_score) VALUE
   ('2021-12-04', 1, 4, 117, 145),
   ('2021-11-24', 3, 5, 118, 113),
   ('2021-12-31', 3, 6, 110, 120);
+
+-- player_statistics
+INSERT INTO player_statistics(player_id, game_id, points, assists, rebounds) VALUES
+  (8, 2, 17, 4, 2),
+  (6, 2, 31, 8, 4),
+  (11, 4, 12, 3, 3),
+  (5, 4, 7, 0, 10);
